@@ -14,3 +14,8 @@ spring:
         highlight_sql: true
         default_batch_fetch_size: 100
     open-in-view: false
+
+jwt:
+  secret: ce2a9345d4ed92e2d4be4b8edca68aedffb1b74b018f4c6a6b7a575ec91673ab86e7ffab5d32f4bbc92b19404b723b9e9631937362f90a5bd80d33362d45f3b8
+  access-token-expiration-sec: 900     # 15분
+  refresh-token-expiration-sec: 1209600 # 14일
