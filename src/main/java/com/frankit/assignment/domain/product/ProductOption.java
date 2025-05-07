@@ -53,4 +53,18 @@ public class ProductOption extends BaseEntity {
         return new ProductOption(id, name, product, optionType, values, additionalPrice);
     }
 
+    public void update(String name, OptionType optionType, BigDecimal additionalPrice) {
+        this.name = name;
+        this.optionType = optionType;
+        this.additionalPrice = additionalPrice;
+    }
+
+    public void clearOptionValues() {
+        this.values.clear();
+    }
+
+    public void addOptionValues(List<String> values) {
+        this.values.addAll(values);
+    }
+
 }
