@@ -1,7 +1,8 @@
 package com.frankit.assignment.api.service.product.response;
 
 import com.frankit.assignment.domain.product.Product;
-import com.frankit.assignment.domain.product.ProductOption;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -9,6 +10,8 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 
+@Builder
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Getter
 public class ProductResponse {
 
@@ -20,18 +23,6 @@ public class ProductResponse {
     private final List<ProductOptionResponse> options;
     private final LocalDateTime createdAt;
     private final LocalDateTime modifiedAt;
-
-    @Builder
-    private ProductResponse(Long id, String name, String description, BigDecimal price, BigDecimal deliveryFee, List<ProductOptionResponse> options, LocalDateTime createdAt, LocalDateTime modifiedAt) {
-        this.id = id;
-        this.name = name;
-        this.description = description;
-        this.price = price;
-        this.deliveryFee = deliveryFee;
-        this.options = options;
-        this.createdAt = createdAt;
-        this.modifiedAt = modifiedAt;
-    }
 
     public static ProductResponse of(Product product, List<ProductOptionResponse> options) {
         return ProductResponse.builder()
@@ -55,6 +46,9 @@ public class ProductResponse {
                 .deliveryFee(product.getDeliveryFee())
                 .createdAt(product.getCreatedAt())
                 .modifiedAt(product.getModifiedAt())
+                .options(product.getOptions().stream()
+                        .map(ProductOptionResponse::of)
+                        .toList())
                 .build();
     }
 

@@ -1,9 +1,12 @@
 package com.frankit.assignment.api.service.product;
 
+import com.frankit.assignment.api.common.response.PageResponse;
 import com.frankit.assignment.api.service.product.request.ProductCreateServiceRequest;
 import com.frankit.assignment.api.service.product.request.ProductOptionCreateServiceRequest;
+import com.frankit.assignment.api.service.product.request.ProductUpdateServiceRequest;
 import com.frankit.assignment.api.service.product.response.ProductResponse;
 import com.frankit.assignment.domain.product.OptionType;
+import com.frankit.assignment.domain.product.Product;
 import com.frankit.assignment.domain.product.ProductOptionRepository;
 import com.frankit.assignment.domain.product.ProductRepository;
 import org.junit.jupiter.api.AfterEach;
@@ -34,6 +37,44 @@ class ProductServiceTest {
     void tearDown() {
         productOptionRepository.deleteAllInBatch();
         productRepository.deleteAllInBatch();
+    }
+
+    @DisplayName("상품 목록 조회 시 정상적으로 데이터를 페이징으로 응답한다.")
+    @Test
+    void findAll() {
+        // given
+        for (int i = 1; i <= 5; i++) {
+            Product product = Product.create(
+                    (long) i,
+                    "상품" + i,
+                    "설명" + i,
+                    BigDecimal.valueOf(10000 * i),
+                    BigDecimal.valueOf(3000)
+            );
+            productRepository.save(product);
+        }
+
+        // when
+        PageResponse<ProductResponse> result = productService.findAll(1, 3);
+
+        // then
+        assertThat(result).isNotNull();
+        assertThat(result.getItems()).hasSize(3);
+        assertThat(result.getItemCount()).isGreaterThanOrEqualTo(3);
+    }
+
+    @DisplayName("상품 ID를 통해 상품 정보를 단건으로 조회한다.")
+    @Test
+    void findById() {
+        // given
+        Product product = productRepository.save(Product.create(1L, "상품A", "설명A", BigDecimal.valueOf(1000), BigDecimal.valueOf(3000)));
+
+        // when
+        ProductResponse result = productService.findById(product.getId());
+
+        // then
+        assertThat(result.getId()).isEqualTo(product.getId());
+        assertThat(result.getName()).isEqualTo("상품A");
     }
 
     @DisplayName("옵션 없는 상품을 등록한다.")
@@ -112,6 +153,45 @@ class ProductServiceTest {
         assertThatThrownBy(() -> productService.create(request))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessageContaining("상품 옵션은 최대 3개까지 등록할 수 있습니다.");
+    }
+
+    @DisplayName("특정 상품을 수정한다.")
+    @Test
+    void updateProduct() {
+        // given
+        Product product = productRepository.save(Product.create(1L, "상품A", "설명A", BigDecimal.valueOf(1000), BigDecimal.valueOf(3000)));
+
+        ProductUpdateServiceRequest request = ProductUpdateServiceRequest.of(
+                "수정된상품",
+                "수정된설명",
+                BigDecimal.valueOf(2000),
+                BigDecimal.valueOf(4000)
+        );
+
+        // when
+        ProductResponse result = productService.update(product.getId(), request);
+
+        // then
+        assertThat(result.getName()).isEqualTo("수정된상품");
+        assertThat(result.getDescription()).isEqualTo("수정된설명");
+        assertThat(result.getPrice()).isEqualTo(BigDecimal.valueOf(2000));
+        assertThat(result.getDeliveryFee()).isEqualTo(BigDecimal.valueOf(4000));
+    }
+
+    @DisplayName("상품 삭제 후 조회 시 예외가 발생한다.")
+    @Test
+    void deleteProduct() {
+        // given
+        Product product = productRepository.save(Product.create(1L, "상품A", "설명A", BigDecimal.valueOf(1000), BigDecimal.valueOf(3000)));
+        Long productId = product.getId();
+
+        // when
+        productService.delete(product.getId());
+
+        // then
+        assertThatThrownBy(() -> productService.findById(productId))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining("상품이 존재하지 않습니다.");
     }
 
 }
