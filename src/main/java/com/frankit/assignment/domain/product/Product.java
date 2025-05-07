@@ -30,4 +30,16 @@ public class Product extends BaseEntity {
     @Column(nullable = false)
     private BigDecimal deliveryFee;
 
+    private Product(Long id, String name, String description, BigDecimal price, BigDecimal deliveryFee) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.price = price;
+        this.deliveryFee = deliveryFee;
+    }
+
+    public static Product create(Long id, String name, String description, BigDecimal price, BigDecimal deliveryFee) {
+        return new Product(id, name, description, price, deliveryFee);
+    }
+
 }

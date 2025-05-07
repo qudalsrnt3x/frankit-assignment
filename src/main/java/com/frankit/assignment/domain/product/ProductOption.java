@@ -36,4 +36,21 @@ public class ProductOption extends BaseEntity {
     @Column(nullable = false)
     private BigDecimal additionalPrice;
 
+    private ProductOption(Long id, String name, Product product, OptionType optionType, List<String> values, BigDecimal additionalPrice) {
+        this.id = id;
+        this.name = name;
+        this.product = product;
+        this.optionType = optionType;
+        this.values = values;
+        this.additionalPrice = additionalPrice;
+    }
+
+    public static ProductOption of(Long id, String name, Product product, OptionType optionType, BigDecimal additionalPrice) {
+        return new ProductOption(id, name, product, optionType, null, additionalPrice);
+    }
+
+    public static ProductOption of(Long id, String name, Product product, OptionType optionType, List<String> values, BigDecimal additionalPrice) {
+        return new ProductOption(id, name, product, optionType, values, additionalPrice);
+    }
+
 }
