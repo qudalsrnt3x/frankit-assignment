@@ -21,7 +21,7 @@ public class SelectOptionCreateStrategy implements ProductOptionCreateStrategy {
     public ProductOption create(Long id, Product product, ProductOptionCreateServiceRequest request) {
         List<String> values = request.getValues();
         if (values == null || values.isEmpty()) {
-            throw new IllegalArgumentException("선택형 옵션은 values가 필수입니다.");
+            throw new IllegalArgumentException("선택형 옵션은 옵션값이 필수입니다.");
         }
 
         return ProductOption.of(

@@ -31,7 +31,7 @@ public class ProductOptionService {
                 () -> new IllegalArgumentException("상품이 존재하지 않습니다.")
         );
 
-        if (productOptionRepository.countByProductId(productId) > 3) {
+        if (productOptionRepository.countByProductId(productId) >= 3) {
             throw new IllegalArgumentException("상품 옵션은 최대 3개까지 등록할 수 있습니다.");
         }
 

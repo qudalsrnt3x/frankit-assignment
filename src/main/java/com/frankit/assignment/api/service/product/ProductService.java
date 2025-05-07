@@ -25,6 +25,10 @@ public class ProductService {
 
     @Transactional
     public ProductResponse create(ProductCreateServiceRequest request) {
+        if (request.getOptions() != null && request.getOptions().size() > 3) {
+            throw new IllegalArgumentException("상품 옵션은 최대 3개까지 등록할 수 있습니다.");
+        }
+
         Product createProduct = Product.create(
                 snowflake.nextId(),
                 request.getName(),
