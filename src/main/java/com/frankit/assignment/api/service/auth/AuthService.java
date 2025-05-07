@@ -23,6 +23,7 @@ public class AuthService {
     private final Snowflake snowflake;
     private final JwtTokenProvider jwtTokenProvider;
 
+    @Transactional
     public AuthResponse signup(SignupServiceRequest request) {
         if (userRepository.existsByEmail(request.getEmail())) {
             throw new IllegalArgumentException("이미 가입된 이메일입니다.");
@@ -38,6 +39,7 @@ public class AuthService {
         return jwtTokenProvider.generateToken(savedUser);
     }
 
+    @Transactional
     public AuthResponse login(LoginServiceRequest request) {
         User user = userRepository.findByEmail(request.getEmail())
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 사용자입니다."));
