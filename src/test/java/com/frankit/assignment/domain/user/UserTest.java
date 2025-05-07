@@ -19,12 +19,7 @@ class UserTest {
         String password = "encoded-password";
 
         // when
-        User user = User.builder()
-                .id(generatedId)
-                .email(email)
-                .password(password)
-                .role(UserRole.CUSTOMER)
-                .build();
+        User user = User.of(generatedId, email, password, UserRole.CUSTOMER);
 
         // then
         assertThat(user.getId()).isEqualTo(generatedId);
