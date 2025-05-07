@@ -1,6 +1,5 @@
 package com.frankit.assignment.api.service.auth;
 
-import com.frankit.assignment.api.service.JwtTokenProvider;
 import com.frankit.assignment.api.service.auth.request.LoginServiceRequest;
 import com.frankit.assignment.api.service.auth.request.SignupServiceRequest;
 import com.frankit.assignment.api.service.auth.response.AuthResponse;

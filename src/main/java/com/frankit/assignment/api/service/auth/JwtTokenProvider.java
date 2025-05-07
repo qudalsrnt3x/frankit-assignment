@@ -1,4 +1,4 @@
-package com.frankit.assignment.api.service;
+package com.frankit.assignment.api.service.auth;
 
 
 import com.frankit.assignment.api.service.auth.response.AuthResponse;
