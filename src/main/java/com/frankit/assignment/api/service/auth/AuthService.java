@@ -31,7 +31,7 @@ public class AuthService {
         User createUser = User.of(snowflake.nextId(),
                 request.getEmail(),
                 passwordEncoder.encode(request.getPassword()),
-                UserRole.CUSTOMER
+                request.getUserRole()
         );
         User savedUser = userRepository.save(createUser);
 

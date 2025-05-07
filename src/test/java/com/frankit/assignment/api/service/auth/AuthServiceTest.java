@@ -5,6 +5,7 @@ import com.frankit.assignment.api.service.auth.request.SignupServiceRequest;
 import com.frankit.assignment.api.service.auth.response.AuthResponse;
 import com.frankit.assignment.domain.user.User;
 import com.frankit.assignment.domain.user.UserRepository;
+import com.frankit.assignment.domain.user.UserRole;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -37,7 +38,7 @@ class AuthServiceTest {
         // given
         String email = "test@test.com";
         String password = "test123";
-        SignupServiceRequest request = SignupServiceRequest.of(email, password);
+        SignupServiceRequest request = SignupServiceRequest.of(email, password, UserRole.CUSTOMER);
 
         // when
         AuthResponse result = authService.signup(request);
@@ -60,7 +61,7 @@ class AuthServiceTest {
         // given
         String email = "test@test.com";
         String password = "test123";
-        SignupServiceRequest request = SignupServiceRequest.of(email, password);
+        SignupServiceRequest request = SignupServiceRequest.of(email, password, UserRole.CUSTOMER);
         authService.signup(request);
 
         // when, then
@@ -76,7 +77,7 @@ class AuthServiceTest {
         String email = "login@test.com";
         String password = "test123";
 
-        authService.signup(SignupServiceRequest.of(email, password));
+        authService.signup(SignupServiceRequest.of(email, password, UserRole.CUSTOMER));
 
         // when
         AuthResponse result = authService.login(LoginServiceRequest.of(email, password));
@@ -116,7 +117,7 @@ class AuthServiceTest {
         String wrongPassword = "wrongpass";
 
         LoginServiceRequest request = LoginServiceRequest.of(email, wrongPassword);
-        authService.signup(SignupServiceRequest.of(email, password));
+        authService.signup(SignupServiceRequest.of(email, password, UserRole.CUSTOMER));
 
         // when, then
         assertThatThrownBy(() -> authService.login(request))

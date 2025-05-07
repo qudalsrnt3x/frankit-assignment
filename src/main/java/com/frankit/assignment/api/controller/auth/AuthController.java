@@ -1,7 +1,7 @@
-package com.frankit.assignment.api.controller;
+package com.frankit.assignment.api.controller.auth;
 
-import com.frankit.assignment.api.controller.request.LoginRequest;
-import com.frankit.assignment.api.controller.request.SignupRequest;
+import com.frankit.assignment.api.controller.auth.request.LoginRequest;
+import com.frankit.assignment.api.controller.auth.request.SignupRequest;
 import com.frankit.assignment.api.service.auth.AuthService;
 import com.frankit.assignment.api.service.auth.response.AuthResponse;
 import jakarta.validation.Valid;
